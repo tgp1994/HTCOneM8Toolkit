@@ -583,7 +583,7 @@ namespace HTC_One_Toolkit
 
             if (MessageBox.Show("The HTC Drivers have been sucessfully downloaded. Would you like to install it now?", "Install driver now?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                System.Diagnostics.Process.Start("./Data/HTC.msi");
+                System.Diagnostics.Process.Start("Data\\HTC.msi");
             }
             else
             {

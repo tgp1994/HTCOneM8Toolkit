@@ -51,7 +51,7 @@
         <GroupBox Header="Drivers" Height="110" HorizontalAlignment="Left" Margin="12,231,0,0" Name="groupBox2" VerticalAlignment="Top" Width="241">
             <Grid>
                 <Button Content="Universal ADB Drivers" Height="23" HorizontalAlignment="Left" Margin="6,11,0,0" Name="btnUniDrivers" VerticalAlignment="Top" Width="217" Click="btnUniDrivers_Click" Background="#FFFFAA28" />
-                <Button Content="HTC Driver" Height="23" HorizontalAlignment="Left" Margin="6,40,0,0" Name="btnHTCDriver" VerticalAlignment="Top" Width="217" Background="#FF47DE47" Click="btnHTCDriver_Click" />
+                <Button Content="HTC Driver" Height="23" HorizontalAlignment="Left" Margin="6,40,0,0" Name="btnHTCDriver" VerticalAlignment="Top" Width="217" Background="#FF47DE47" Click="btnHTCDriver_Click" IsEnabled="False" />
                 <CheckBox Height="16" HorizontalAlignment="Left" Margin="16,15,0,0" Name="cBUniADB" VerticalAlignment="Top" IsEnabled="False" />
                 <CheckBox Height="16" HorizontalAlignment="Left" Margin="16,44,0,0" Name="cBHTCDriver" VerticalAlignment="Top" IsEnabled="False" />
                 <ProgressBar Height="10" HorizontalAlignment="Left" Name="progressBar1" VerticalAlignment="Top" Width="217" Margin="6,69,0,0" />
