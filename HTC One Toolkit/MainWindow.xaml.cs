@@ -15,8 +15,6 @@ using AndroidCtrl.ADB;
 using AndroidCtrl.Fastboot;
 using AndroidCtrl.Tools;
 
-
-
 namespace HTC_One_Toolkit
 {
 	/// <summary>
@@ -37,11 +35,11 @@ namespace HTC_One_Toolkit
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            BackgroundWorker UpdateChecker = new BackgroundWorker();
+            /*BackgroundWorker UpdateChecker = new BackgroundWorker();
             UpdateChecker.WorkerReportsProgress = true;
             UpdateChecker.DoWork += workerDriver_DoWork;
 
-            UpdateChecker.RunWorkerAsync();
+            UpdateChecker.RunWorkerAsync();*/
 
             BackgroundWorker workerDriver = new BackgroundWorker();
             workerDriver.WorkerReportsProgress = true;
@@ -54,8 +52,6 @@ namespace HTC_One_Toolkit
         {
             //empty
         }
-
-        private int _count = 0;
 
         void UpdateChecker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -98,56 +94,59 @@ namespace HTC_One_Toolkit
             workerDeploy.RunWorkerAsync();
         }
 
-        void workerDeploy_DoWork(object sender, DoWorkEventArgs e)
-        {
-            if (File.Exists("./adb/adb.exe"))
-            {
+		/// <summary>
+		/// Check to see if initial setup has been completed, which means e.g ADB binaries have been downloaded and
+		/// extracted to the working directory.
+		/// </summary>
+		/// <returns>True if all necessary ADB files exist, false if one or more are missing and setup is required.</returns>
+		/// 
+		private bool ADBFilesExist()
+		{
+			string adbDir = "adb";
+			// Files that will eventually be checked for existing in the ADB directory.
+			string[] fileList = { "adb.exe", "fastboot.exe", "aapt.exe", "AdbWinApi.dll", "AdbWinUsbApi.dll" };
+			bool allFilesExist = true; // Assume true for now but change the moment we know otherwise.
 
-            }
-            else
-            {
-                _count++;
-            }
-            if (File.Exists("./adb/fastboot.exe"))
-            {
+			if (!Directory.Exists(adbDir))
+			{
+				allFilesExist = false;
+			}
 
-            }
-            else
-            {
-                _count++;
+			// Now verify that all of the files are present.
+			if (allFilesExist)
+			{
+				string[] files = Directory.GetFiles(adbDir);
 
-            }
-            if (File.Exists("./adb/aapt.exe"))
-            {
+				if (files.Length > 0)
+				{
+					int matchCounter = 0;
 
-            }
-            else
-            {
-                _count++;
+					for (int i = 0; i < files.Length; i++)
+					{
+						for (int j = 0; j < fileList.Length; j++)
+						{
+							if (files[i].Contains(fileList[j]))
+								matchCounter++;
+						}
+					}
 
-            }
-            if (File.Exists("./adb/AdbWinApi.dll"))
-            {
+					// Not all of the required files were found, deployment is needed.
+					if (matchCounter < fileList.Length)
+						allFilesExist = false;
+				}
+			}
 
-            }
-            else
-            {
-                _count++;
+			return allFilesExist;
+		}
 
-            }
-            if (File.Exists("./adb/AdbWinUsbApi.dll"))
+		void workerDeploy_DoWork(object sender, DoWorkEventArgs e)
+		{
+			// Error condition: one or more files were missing and ADB needs to be redeployed.
+            if (!ADBFilesExist())
             {
-
-            }
-            else
-            {
-                _count++;
-
-            }
-
-            if (_count > 0)
-            {
-                MessageBoxResult result = MessageBox.Show("The ADB and Fastboot files have not been deployed correctly. \nWould you like to deploy now? \nNot deploying will make this kit useless.", "Deployment Issue", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                MessageBoxResult result = MessageBox.Show(
+					"The ADB utility files were not found and need to be installed. Would you like to deploy now? \nNote: These files are required for this program to function!",
+					"Initial Installation Required", MessageBoxButton.YesNo, MessageBoxImage.Error);
                 if (result == MessageBoxResult.Yes)
                 {
 
@@ -163,6 +162,7 @@ namespace HTC_One_Toolkit
                     MessageBox.Show("You must deploy the ADB and Fastboot utilities, otherwise the application will NOT work!", "Not Operable", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
+
             else
             {
                 ADB.Start();
