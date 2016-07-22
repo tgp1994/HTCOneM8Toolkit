@@ -1,28 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.IO;
-
-using AndroidCtrl;
-using AndroidCtrl.ADB;
-using AndroidCtrl.Fastboot;
 using AndroidCtrl.Tools;
 
 namespace HTC_One_Toolkit
 {
-    /// <summary>
-    /// Interaction logic for Start.xaml
-    /// </summary>
-    public partial class Start : Window
+	/// <summary>
+	/// Interaction logic for Start.xaml
+	/// </summary>
+	public partial class Start : Window
     {
         public Start()
         {
@@ -259,5 +245,10 @@ namespace HTC_One_Toolkit
                     lblFailFiles.Foreground = new SolidColorBrush(Colors.Green);
                 }
             }
-        }
+
+		private void btnClose_Click(object sender, RoutedEventArgs e)
+		{
+			this.Close();
+		}
+	}
     }
